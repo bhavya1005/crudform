@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgChartsModule } from 'ng2-charts';
-import { EmployeeListComponent } from '../employees/employees.component'; // if using employee table here
+import { ChartType } from 'chart.js';
+import { EmployeeListComponent } from '../employees/employees.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,5 +14,5 @@ import { EmployeeListComponent } from '../employees/employees.component'; // if 
 export class DashboardComponent {
   pieChartLabels = ['HR', 'Engineering', 'Finance', 'Sales'];
   pieChartData = [25, 25, 25, 25];
-  pieChartType = 'pie';
+  pieChartType: ChartType = 'pie';
 }

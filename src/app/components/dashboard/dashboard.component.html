@@ -1,5 +1,11 @@
-<h2>Employee Department Distribution</h2>
-<canvas baseChart
-        [data]="{ labels: pieChartLabels, datasets: [{ data: pieChartData }] }"
-        [type]="pieChartType">
-</canvas>
+<h2 class="text-2xl font-bold mb-6 text-center">Employee Department Distribution</h2>
+
+<div class="flex justify-center mb-8">
+  <canvas baseChart
+          [data]="{ labels: pieChartLabels, datasets: [{ data: pieChartData }] }"
+          [type]="pieChartType">
+  </canvas>
+</div>
+
+<!-- Optional: employee list on dashboard -->
+<app-employee-list></app-employee-list>

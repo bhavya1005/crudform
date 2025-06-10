@@ -1,23 +1,15 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { UserFormComponent } from './components/user-form/user-form.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { EmployeeListComponent } from './components/employees/employees.component';
 import { DepartmentsComponent } from './components/departments/departments';
 import { SettingsComponent } from './components/settings/settings';
+import { EmployeeListComponent } from './components/employees/employees.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: 'add-employee', component: UserFormComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'departments', component: DepartmentsComponent },
   { path: 'settings', component: SettingsComponent },
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'employees', component: EmployeeListComponent },
-
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }

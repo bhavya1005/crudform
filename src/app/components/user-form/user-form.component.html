@@ -1,85 +1,48 @@
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="space-y-4 max-w-xl">
+  <input formControlName="name" placeholder="Name" class="w-full p-2 border rounded" />
+  <input formControlName="id" placeholder="Employee ID" class="w-full p-2 border rounded" />
+  <input formControlName="salary" type="number" placeholder="Salary" class="w-full p-2 border rounded" />
 
-<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="form-container">
-  <!-- Name -->
-  <label>
-    Name
-    <input type="text" formControlName="name" />
-    <span *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched">
-      Name is required
-    </span>
-  </label>
+  <select formControlName="department" class="w-full p-2 border rounded">
+    <option value="" disabled selected>Select Department</option>
+    <option value="HR">HR</option>
+    <option value="Engineering">Engineering</option>
+    <option value="Finance">Finance</option>
+    <option value="Sales">Sales</option>
+  </select>
 
-  <!-- Department -->
-  <label>
-    Department
-    <select formControlName="Department">
-      <option value="" disabled selected>Select Department</option>
-      <option value="HR">HR</option>
-      <option value="Engineering">Engineering</option>
-      <option value="Marketing">Marketing</option>
-      <option value="Finance">Finance</option>
-    </select>
-    <span *ngIf="userForm.get('Department')?.invalid && userForm.get('Department')?.touched">
-      Department is required
-    </span>
-  </label>
+  <input formControlName="phone" placeholder="Phone Number" class="w-full p-2 border rounded" />
+  <input formControlName="pincode" placeholder="Pincode" class="w-full p-2 border rounded" />
+  <textarea formControlName="address" placeholder="Address" rows="3" class="w-full p-2 border rounded"></textarea>
 
-  <!-- Phone -->
-  <label>
-    Phone
-    <input type="number" formControlName="phone" />
-    <span *ngIf="userForm.get('phone')?.invalid && userForm.get('phone')?.touched">
-      Enter a valid 10-digit phone number
-    </span>
-  </label>
-
-  <!-- Address -->
-  <label>
-    Address
-    <input type="text" formControlName="address" />
-    <span *ngIf="userForm.get('address')?.invalid && userForm.get('address')?.touched">
-      Address is required
-    </span>
-  </label>
-
-  <!-- Pincode -->
-  <label>
-    Pincode
-    <input type="number" formControlName="pincode" />
-    <span *ngIf="userForm.get('pincode')?.invalid && userForm.get('pincode')?.touched">
-      Enter a valid 6-digit pincode
-    </span>
-  </label>
-
-  <!-- Submit -->
-  <button type="submit">
-    {{ editIndex !== null ? 'Update' : 'Add' }} Employee
+  <button type="submit" [disabled]="userForm.invalid" class="bg-blue-600 text-white px-4 py-2 rounded">
+    {{ editIndex !== null ? 'Update' : 'Submit' }}
   </button>
 </form>
 
-<!-- Employee Table -->
-<table *ngIf="userList.length > 0">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Department</th>
-      <th>Phone</th>
-      <th>Address</th>
-      <th>Pincode</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let user of userList; let i = index">
-      <td>{{ user.name }}</td>
-      <td>{{ user.Department }}</td>
-      <td>{{ user.phone }}</td>
-      <td>{{ user.address }}</td>
-      <td>{{ user.pincode }}</td>
-      <td>
-        <button (click)="onEdit(i)">Edit</button>
-        <button (click)="onDelete(i)">Delete</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<!-- Show submitted employee list -->
+<div *ngIf="userList.length > 0" class="mt-8">
+  <h3 class="text-xl font-semibold mb-2">Employee List</h3>
+  <table class="w-full table-auto border-collapse">
+    <thead>
+      <tr class="bg-gray-200">
+        <th>Name</th><th>ID</th><th>Salary</th><th>Dept</th><th>Phone</th><th>Pincode</th><th>Address</th><th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of userList; let i = index" class="border-t">
+        <td>{{ user.name }}</td>
+        <td>{{ user.id }}</td>
+        <td>{{ user.salary }}</td>
+        <td>{{ user.department }}</td>
+        <td>{{ user.phone }}</td>
+        <td>{{ user.pincode }}</td>
+        <td>{{ user.address }}</td>
+        <td>
+          <button (click)="onEdit(i)" class="text-blue-600">Edit</button> |
+          <button (click)="onDelete(i)" class="text-red-600">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

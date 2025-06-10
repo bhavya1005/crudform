@@ -1,16 +1,17 @@
-<div class="app-container">
-  <nav class="sidebar">
-    <h2>ABC Corp</h2>
-    <ul>
-      <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
-      <li><a routerLink="/employees" routerLinkActive="active">Employees</a></li>
-      <li><a routerLink="/departments" routerLinkActive="active">Departments</a></li>
-      <li><a routerLink="/settings" routerLinkActive="active">Settings</a></li>
-    </ul>
-  </nav>
+<div class="flex h-screen">
+  <!-- Sidebar -->
+  <div class="w-60 bg-gray-800 text-white p-4">
+    <h1 class="text-2xl font-bold mb-6">ABC Corp</h1>
+    <nav class="flex flex-col space-y-4">
+      <a routerLink="/add-employee" class="hover:text-blue-300">Enter Employee Info</a>
+      <a routerLink="/dashboard" class="hover:text-blue-300">Dashboard</a>
+      <a routerLink="/departments" class="hover:text-blue-300">Departments</a>
+      <a routerLink="/settings" class="hover:text-blue-300">Settings</a>
+    </nav>
+  </div>
 
-  <main class="main-content">
+  <!-- Main content -->
+  <div class="flex-1 p-6 overflow-auto bg-gray-100">
     <router-outlet></router-outlet>
-  </main>
+  </div>
 </div>
-#

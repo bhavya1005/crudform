@@ -1,7 +1,6 @@
-// src/app/components/user-form/user-form.component.ts
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user-form',
@@ -12,36 +11,40 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 })
 export class UserFormComponent {
   userForm: FormGroup;
-  users: any[] = [];
+  userList: any[] = [];
+  editIndex: number | null = null;
 
   constructor(private fb: FormBuilder) {
     this.userForm = this.fb.group({
       name: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       address: ['', Validators.required],
-      pincode: ['', [Validators.required, Validators.pattern(/^[1-9][0-9]{5}$/)]]
+      pincode: ['', Validators.required],
     });
   }
 
-  onSubmit(): void {
-    if (this.userForm.invalid) return;
-
-    const newUser = {
-      id: Date.now(),
-      ...this.userForm.value
-    };
-
-    this.users.push(newUser);
-    this.userForm.reset();
+  onSubmit() {
+    if (this.userForm.valid) {
+      if (this.editIndex !== null) {
+        this.userList[this.editIndex] = this.userForm.value;
+        this.editIndex = null;
+      } else {
+        this.userList.push(this.userForm.value);
+      }
+      this.userForm.reset();
+    }
   }
 
-  onEdit(index: number): void {
-    const user = this.users[index];
-    this.userForm.patchValue(user);
-    this.onDelete(index);
+  onEdit(index: number) {
+    this.editIndex = index;
+    this.userForm.setValue(this.userList[index]);
   }
 
-  onDelete(index: number): void {
-    this.users.splice(index, 1);
+  onDelete(index: number) {
+    this.userList.splice(index, 1);
+    if (this.editIndex === index) {
+      this.userForm.reset();
+      this.editIndex = null;
+    }
   }
 }

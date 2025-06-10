@@ -1,7 +1,9 @@
 export interface User {
   id: number;
   name: string;
-  phone: string;
+  Department: string;
+  phone: number;
   address: string;
-  pincode: string;
+  pincode: number;
+  
 }

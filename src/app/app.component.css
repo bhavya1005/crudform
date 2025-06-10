@@ -1,0 +1,7 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+  margin-top: 40px;
+}

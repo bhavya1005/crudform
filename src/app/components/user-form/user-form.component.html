@@ -1,0 +1,15 @@
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="form-container">
+  <input formControlName="name" placeholder="Name" />
+  <input formControlName="phone" placeholder="Phone" />
+  <input formControlName="address" placeholder="Address" />
+  <input formControlName="pincode" placeholder="Pincode" />
+  <button type="submit">Add User</button>
+</form>
+
+<ul>
+  <li *ngFor="let user of users; let i = index">
+    {{ user.name }} | {{ user.phone }} | {{ user.pincode }}
+    <button (click)="onEdit(i)">Edit</button>
+    <button (click)="onDelete(i)">Delete</button>
+  </li>
+</ul>

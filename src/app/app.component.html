@@ -1,18 +1,16 @@
-<div class="layout">
-  <aside class="sidebar">
+<div class="app-container">
+  <nav class="sidebar">
     <h2>ABC Corp</h2>
     <ul>
-      <li>Dashboard</li>
-      <li>Employees</li>
-      <li>Departments</li>
-      <li>Settings</li>
+      <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
+      <li><a routerLink="/employees" routerLinkActive="active">Employees</a></li>
+      <li><a routerLink="/departments" routerLinkActive="active">Departments</a></li>
+      <li><a routerLink="/settings" routerLinkActive="active">Settings</a></li>
     </ul>
-  </aside>
+  </nav>
 
   <main class="main-content">
-    <h1 class="brand-heading">ABC Corporations Pvt. Ltd.</h1>
-    <h2 class="subheading">Employee Management System</h2>
-    <app-user-form></app-user-form>
+    <router-outlet></router-outlet>
   </main>
 </div>
-
+#

@@ -1,15 +1,14 @@
+// src/app/app.component.ts
 import { Component } from '@angular/core';
-import { UserFormComponent } from './components/user-form/user-form.component';
-
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [UserFormComponent],
+  imports: [RouterModule], // This is required for <router-outlet> to work
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-
 export class AppComponent {
-  protected title = 'CRUD Form';
+  title = 'crudform';
 }

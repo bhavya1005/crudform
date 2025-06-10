@@ -1,0 +1,32 @@
+<div class="employee-container">
+  <h2>All Employees</h2>
+
+  <input
+    type="text"
+    placeholder="Search by name or department..."
+    [(ngModel)]="searchTerm"
+    class="search-box"
+  />
+
+  <table *ngIf="filteredEmployees.length > 0">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Pincode</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let emp of filteredEmployees">
+        <td>{{ emp.name }}</td>
+        <td>{{ emp.department }}</td>
+        <td>{{ emp.phone }}</td>
+        <td>{{ emp.address }}</td>
+        <td>{{ emp.pincode }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <p *ngIf="filteredEmployees.length === 0">No employees found.</p>
+</div>

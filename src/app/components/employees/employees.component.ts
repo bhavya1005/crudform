@@ -1,21 +1,53 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EmployeeService } from '../../services/employee.service';
-import { User } from '../../models/user.model';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-employee-list',
-  standalone: true,
-  imports: [CommonModule],
+  standalone: true, // 👈 This is critical for standalone setup
+  imports: [CommonModule, ReactiveFormsModule], // 👈 Add this line
   templateUrl: './employees.component.html',
   styleUrls: ['./employees.component.css']
 })
-export class EmployeeListComponent implements OnInit {
-  employees: User[] = [];
+export class EmployeeListComponent {
+  userForm: FormGroup;
+  userList: any[] = [];
+  editIndex: number | null = null;
 
-  constructor(private employeeService: EmployeeService) {}
+  constructor(private fb: FormBuilder) {
+    this.userForm = this.fb.group({
+      name: ['', Validators.required],
+      id: ['', Validators.required],
+      salary: ['', Validators.required],
+      department: ['', Validators.required],
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      pincode: ['', Validators.required],
+      address: ['', Validators.required]
+    });
+  }
 
-  ngOnInit(): void {
-    this.employees = this.employeeService.getEmployees();
+  onSubmit() {
+    if (this.userForm.valid) {
+      if (this.editIndex !== null) {
+        this.userList[this.editIndex] = this.userForm.value;
+        this.editIndex = null;
+      } else {
+        this.userList.push(this.userForm.value);
+      }
+      this.userForm.reset();
+    }
+  }
+
+  onEdit(index: number) {
+    this.editIndex = index;
+    this.userForm.setValue(this.userList[index]);
+  }
+
+  onDelete(index: number) {
+    this.userList.splice(index, 1);
+    if (this.editIndex === index) {
+      this.userForm.reset();
+      this.editIndex = null;
+    }
   }
 }

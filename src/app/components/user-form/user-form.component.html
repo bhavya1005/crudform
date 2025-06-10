@@ -1,9 +1,9 @@
-<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="space-y-4 max-w-xl">
-  <input formControlName="name" placeholder="Name" class="w-full p-2 border rounded" />
-  <input formControlName="id" placeholder="Employee ID" class="w-full p-2 border rounded" />
-  <input formControlName="salary" type="number" placeholder="Salary" class="w-full p-2 border rounded" />
-
-  <select formControlName="department" class="w-full p-2 border rounded">
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl">
+  <input class="input" formControlName="name" placeholder="Name" />
+  <input class="input" formControlName="id" placeholder="Employee ID" />
+  <input class="input" formControlName="salary" placeholder="Salary" type="number" />
+  
+  <select class="input" formControlName="department">
     <option value="" disabled selected>Select Department</option>
     <option value="HR">HR</option>
     <option value="Engineering">Engineering</option>
@@ -11,38 +11,11 @@
     <option value="Sales">Sales</option>
   </select>
 
-  <input formControlName="phone" placeholder="Phone Number" class="w-full p-2 border rounded" />
-  <input formControlName="pincode" placeholder="Pincode" class="w-full p-2 border rounded" />
-  <textarea formControlName="address" placeholder="Address" rows="3" class="w-full p-2 border rounded"></textarea>
+  <input class="input" formControlName="phone" placeholder="Phone Number" />
+  <input class="input" formControlName="pincode" placeholder="Pincode" />
+  <textarea class="input col-span-2" formControlName="address" placeholder="Address" rows="3"></textarea>
 
-  <button type="submit" [disabled]="userForm.invalid" class="bg-blue-600 text-white px-4 py-2 rounded">
+  <button type="submit" class="col-span-2 bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
     {{ editIndex !== null ? 'Update' : 'Submit' }}
   </button>
 </form>
-
-<!-- Show submitted employee list -->
-<div *ngIf="userList.length > 0" class="mt-8">
-  <h3 class="text-xl font-semibold mb-2">Employee List</h3>
-  <table class="w-full table-auto border-collapse">
-    <thead>
-      <tr class="bg-gray-200">
-        <th>Name</th><th>ID</th><th>Salary</th><th>Dept</th><th>Phone</th><th>Pincode</th><th>Address</th><th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let user of userList; let i = index" class="border-t">
-        <td>{{ user.name }}</td>
-        <td>{{ user.id }}</td>
-        <td>{{ user.salary }}</td>
-        <td>{{ user.department }}</td>
-        <td>{{ user.phone }}</td>
-        <td>{{ user.pincode }}</td>
-        <td>{{ user.address }}</td>
-        <td>
-          <button (click)="onEdit(i)" class="text-blue-600">Edit</button> |
-          <button (click)="onDelete(i)" class="text-red-600">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>

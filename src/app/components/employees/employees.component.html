@@ -1,23 +1,56 @@
-<h2 class="text-xl font-semibold mb-4">All Employees</h2>
-<table class="min-w-full border border-gray-300">
-  <thead class="bg-gray-100">
-    <tr>
-      <th class="p-2 border">ID</th>
-      <th class="p-2 border">Name</th>
-      <th class="p-2 border">Department</th>
-      <th class="p-2 border">Phone</th>
-      <th class="p-2 border">Address</th>
-      <th class="p-2 border">Pincode</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let emp of employees" class="hover:bg-gray-50">
-      <td class="p-2 border">{{ emp.id }}</td>
-      <td class="p-2 border">{{ emp.name }}</td>
-      <td class="p-2 border">{{ emp.department }}</td>
-      <td class="p-2 border">{{ emp.phone }}</td>
-      <td class="p-2 border">{{ emp.address }}</td>
-      <td class="p-2 border">{{ emp.pincode }}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="p-6 max-w-4xl mx-auto">
+  <h2 class="text-2xl font-semibold mb-6 text-center">Employee Information Form</h2>
+
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 gap-4 md:grid-cols-2 bg-white p-6 rounded-lg shadow">
+    <input type="text" formControlName="name" placeholder="Name" class="p-2 border rounded" />
+    <input type="text" formControlName="id" placeholder="Employee ID" class="p-2 border rounded" />
+    <input type="text" formControlName="salary" placeholder="Salary" class="p-2 border rounded" />
+
+    <select formControlName="department" class="p-2 border rounded">
+      <option value="" disabled>Select Department</option>
+      <option value="HR">HR</option>
+      <option value="Engineering">Engineering</option>
+      <option value="Marketing">Marketing</option>
+      <option value="Finance">Finance</option>
+    </select>
+
+    <input type="text" formControlName="phone" placeholder="Phone Number" class="p-2 border rounded" />
+    <input type="text" formControlName="pincode" placeholder="Pincode" class="p-2 border rounded" />
+    <textarea formControlName="address" placeholder="Address" class="p-2 border rounded md:col-span-2"></textarea>
+
+    <button type="submit" class="md:col-span-2 bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+      {{ editIndex !== null ? 'Update Employee' : 'Add Employee' }}
+    </button>
+  </form>
+
+  <div *ngIf="userList.length > 0" class="mt-10">
+    <h3 class="text-xl font-medium mb-4">Employee List</h3>
+    <table class="w-full table-auto border-collapse border border-gray-300">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="border border-gray-300 px-4 py-2">#</th>
+          <th class="border border-gray-300 px-4 py-2">Name</th>
+          <th class="border border-gray-300 px-4 py-2">ID</th>
+          <th class="border border-gray-300 px-4 py-2">Department</th>
+          <th class="border border-gray-300 px-4 py-2">Phone</th>
+          <th class="border border-gray-300 px-4 py-2">Pincode</th>
+          <th class="border border-gray-300 px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of userList; let i = index" class="odd:bg-white even:bg-gray-50">
+          <td class="border border-gray-300 px-4 py-2">{{ i + 1 }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ user.name }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ user.id }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ user.department }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ user.phone }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ user.pincode }}</td>
+          <td class="border border-gray-300 px-4 py-2 flex gap-2">
+            <button (click)="onEdit(i)" class="text-blue-600 hover:underline">Edit</button>
+            <button (click)="onDelete(i)" class="text-red-600 hover:underline">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

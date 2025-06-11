@@ -1,40 +1,31 @@
 import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { User } from '../models/user.model';
+import { faker } from '@faker-js/faker';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class EmployeeService {
   private employees: User[] = [];
 
   constructor() {
-    this.generateDummyEmployees(50);
+    this.employees = this.generateFakeEmployees(500);
   }
 
-  getEmployees(): User[] {
-    return this.employees;
+  private generateFakeEmployees(count: number): User[] {
+    const depts = ['Engineering','HR','Marketing','Sales','Finance'];
+    return Array.from({ length: count }).map((_, i) => ({
+      name: faker.person.fullName(),
+      id: `EMP${String(i+1).padStart(4,'0')}`,
+      salary: faker.number.float({ min: 30000, max: 120000, fractionDigits: 2 }),
+      department: faker.helpers.arrayElement(depts),
+      phone: faker.string.numeric(10),
+      pincode: faker.location.zipCode(),
+      address: faker.location.streetAddress().replace(/\n/g, ', ')
+    }));
   }
 
-  getEmployeeStats(): { [department: string]: number } {
-    const stats: { [department: string]: number } = {};
-    for (const emp of this.employees) {
-      stats[emp.department] = (stats[emp.department] || 0) + 1;
-    }
-    return stats;
-  }
-
-  private generateDummyEmployees(count: number): void {
-    const departments = ['HR', 'Engineering', 'Finance', 'Sales'];
-    for (let i = 0; i < count; i++) {
-      const emp: User = {
-        id: i + 1,
-        name: `Employee ${i + 1}`,
-        department: departments[i % departments.length],
-        phone: String(9000000000 + Math.floor(Math.random() * 100000000)),
-        address: `Street ${i + 1}`,
-        pincode: String(100000 + i)
-      };
-      this.employees.push(emp);
-    }
+  /** Returns an Observable of the full list */
+  getEmployees(): Observable<User[]> {
+    return of(this.employees);
   }
 }

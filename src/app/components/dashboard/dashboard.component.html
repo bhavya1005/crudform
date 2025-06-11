@@ -1,11 +1,97 @@
-<h2 class="text-2xl font-bold mb-6 text-center">Employee Department Distribution</h2>
+<div class="p-6 space-y-8">
+  <h1 class="text-3xl font-bold">Employee Dashboard</h1>
 
-<div class="flex justify-center mb-8">
-  <canvas baseChart
-          [data]="{ labels: pieChartLabels, datasets: [{ data: pieChartData }] }"
-          [type]="pieChartType">
-  </canvas>
+  <!-- Summary cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="bg-white p-4 rounded shadow">
+      <h2 class="font-medium">Total Employees</h2>
+      <p class="text-2xl">{{ totalEmployees }}</p>
+    </div>
+    <div class="bg-white p-4 rounded shadow">
+      <h2 class="font-medium">Average Salary</h2>
+      <p class="text-2xl">${{ overallAvgSalary | number:'1.0-2' }}</p>
+    </div>
+    <div class="bg-white p-4 rounded shadow">
+      <h2 class="font-medium">Departments</h2>
+      <p class="text-2xl">{{ departmentCount }}</p>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="bg-white p-4 rounded shadow">
+      <h3 class="font-medium mb-2">Employees by Department</h3>
+      <canvas baseChart [data]="pieChartData" [type]="pieChartType"></canvas>
+    </div>
+    <div class="bg-white p-4 rounded shadow">
+      <h3 class="font-medium mb-2">Avg Salary by Department</h3>
+      <canvas baseChart [data]="barChartData" [type]="barChartType"></canvas>
+    </div>
+  </div>
+
+  <!-- Filters & Export -->
+  <div class="flex flex-wrap gap-4 items-center">
+    <input
+      type="text"
+      placeholder="Search name or ID"
+      (input)="onSearchTermChange($any($event.target).value)"
+      class="p-2 border rounded flex-1"
+    />
+    <select
+      (change)="onDeptChange($any($event.target).value)"
+      class="p-2 border rounded"
+    >
+      <option value="">All Departments</option>
+      <option *ngFor="let d of pieChartData.labels" [value]="d">{{ d }}</option>
+    </select>
+    <button
+      (click)="exportCsv()"
+      class="ml-auto bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+    >
+      Export CSV
+    </button>
+  </div>
+
+  <!-- Top 5 Earners -->
+  <div class="bg-white p-4 rounded shadow">
+    <h3 class="font-medium mb-4">Top 5 Earners</h3>
+    <!-- … top earners table … -->
+  </div>
+
+  <!-- All Employees Table -->
+  <div class="bg-white p-4 rounded shadow">
+    <h3 class="font-medium mb-4">All Employees</h3>
+    <table class="min-w-full table-auto">
+      <!-- … table head … -->
+      <tbody>
+        <tr *ngFor="let u of pagedEmployees" class="odd:bg-white even:bg-gray-50 text-sm">
+          <td class="px-2 py-1">{{ u.id }}</td>
+          <td class="px-4 py-1">{{ u.name }}</td>
+          <td class="px-2 py-1">{{ u.department }}</td>
+          <td class="px-4 py-1">${{ u.salary | number:'1.0-2' }}</td>
+          <td class="px-4 py-1">{{ u.phone }}</td>
+          <td class="px-4 py-1">{{ u.pincode }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination Controls -->
+    <div class="flex justify-center items-center gap-2 mt-4">
+      <button
+        (click)="currentPage = currentPage - 1"
+        [disabled]="currentPage === 1"
+        class="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+      >
+        Prev
+      </button>
+      <span>Page {{ currentPage }} / {{ totalPages }}</span>
+      <button
+        (click)="currentPage = currentPage + 1"
+        [disabled]="currentPage * pageSize >= filteredEmployees.length"
+        class="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+      >
+        Next
+      </button>
+    </div>
+  </div>
 </div>
-
-<!-- Optional: employee list on dashboard -->
-<app-employee-list></app-employee-list>

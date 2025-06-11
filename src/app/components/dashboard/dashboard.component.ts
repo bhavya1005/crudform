@@ -13,23 +13,24 @@ import { User } from '../../models/user.model';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  // All data
   employees: User[] = [];
   filteredEmployees: User[] = [];
 
-  // UI state
+  // Search & filter
   searchTerm = '';
   filterDept = '';
+
+  // Pagination
   pageSize = 25;
   currentPage = 1;
   totalPages = 1;
 
-  // Summary
+  // Summary stats
   totalEmployees = 0;
   overallAvgSalary = 0;
   departmentCount = 0;
 
-  // Dept analytics
+  // Department analytics
   departmentStats: Record<string, number> = {};
   avgSalaryByDept: Record<string, number> = {};
 
@@ -54,13 +55,13 @@ export class DashboardComponent implements OnInit {
   }
 
   private prepareDashboardStats(): void {
-    // Totals
+    // Total & average
     this.totalEmployees = this.employees.length;
     this.overallAvgSalary =
       this.employees.reduce((sum, u) => sum + u.salary, 0) /
       (this.totalEmployees || 1);
 
-    // Departments
+    // By department
     const depts = Array.from(new Set(this.employees.map(u => u.department)));
     this.departmentCount = depts.length;
 
@@ -72,16 +73,21 @@ export class DashboardComponent implements OnInit {
         (group.length || 1);
     });
 
-    // Pie chart
+    // Pie chart data
     const labels = Object.keys(this.departmentStats);
-    const counts = labels.map(d => this.departmentStats[d]);
-    this.pieChartData = { labels, datasets: [{ data: counts }] };
+    this.pieChartData = {
+      labels,
+      datasets: [{ data: labels.map(d => this.departmentStats[d]) }]
+    };
 
-    // Bar chart
-    const avgs = labels.map(d => this.avgSalaryByDept[d]);
-    this.barChartData = { labels, datasets: [{ data: avgs, label: 'Avg Salary' }] };
+    // Bar chart data
+    const avg = labels.map(d => this.avgSalaryByDept[d]);
+    this.barChartData = {
+      labels,
+      datasets: [{ data: avg, label: 'Avg Salary' }]
+    };
 
-    // Top earners
+    // Top 5 earners
     this.topEarners = [...this.employees]
       .sort((a, b) => b.salary - a.salary)
       .slice(0, 5);

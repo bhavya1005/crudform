@@ -1,7 +1,7 @@
 <div class="p-6 space-y-8">
-  <h1 class="text-3xl font-bold">Employee Dashboard</h1>
+  <h1 class="text-3xl font-bold">Employee Information Dashboard</h1>
 
-  <!-- Summary cards -->
+  <!-- Summary Cards -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
     <div class="bg-white p-4 rounded shadow">
       <h2 class="font-medium">Total Employees</h2>
@@ -31,19 +31,25 @@
 
   <!-- Filters & Export -->
   <div class="flex flex-wrap gap-4 items-center">
+    <!-- Template reference for input -->
     <input
+      #searchInput
       type="text"
       placeholder="Search name or ID"
-      (input)="onSearchTermChange($any($event.target).value)"
+      (input)="onSearchTermChange(searchInput.value)"
       class="p-2 border rounded flex-1"
     />
+
+    <!-- Template reference for select -->
     <select
-      (change)="onDeptChange($any($event.target).value)"
+      #deptSelect
+      (change)="onDeptChange(deptSelect.value)"
       class="p-2 border rounded"
     >
       <option value="">All Departments</option>
       <option *ngFor="let d of pieChartData.labels" [value]="d">{{ d }}</option>
     </select>
+
     <button
       (click)="exportCsv()"
       class="ml-auto bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
@@ -55,14 +61,43 @@
   <!-- Top 5 Earners -->
   <div class="bg-white p-4 rounded shadow">
     <h3 class="font-medium mb-4">Top 5 Earners</h3>
-    <!-- … top earners table … -->
+
+    <p *ngIf="!topEarners.length" class="text-gray-500">
+      No top earners to display.
+    </p>
+
+    <table *ngIf="topEarners.length" class="w-full table-auto">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-4 py-2">Name</th>
+          <th class="px-4 py-2">Salary</th>
+          <th class="px-4 py-2">Department</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of topEarners" class="odd:bg-white even:bg-gray-50">
+          <td class="px-4 py-2">{{ u.name }}</td>
+          <td class="px-4 py-2">${{ u.salary | number:'1.0-2' }}</td>
+          <td class="px-4 py-2">{{ u.department }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <!-- All Employees Table -->
   <div class="bg-white p-4 rounded shadow">
     <h3 class="font-medium mb-4">All Employees</h3>
     <table class="min-w-full table-auto">
-      <!-- … table head … -->
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-2 py-1">ID</th>
+          <th class="px-4 py-1">Name</th>
+          <th class="px-2 py-1">Dept</th>
+          <th class="px-4 py-1">Salary</th>
+          <th class="px-4 py-1">Phone</th>
+          <th class="px-4 py-1">Pincode</th>
+        </tr>
+      </thead>
       <tbody>
         <tr *ngFor="let u of pagedEmployees" class="odd:bg-white even:bg-gray-50 text-sm">
           <td class="px-2 py-1">{{ u.id }}</td>
@@ -81,17 +116,13 @@
         (click)="currentPage = currentPage - 1"
         [disabled]="currentPage === 1"
         class="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-      >
-        Prev
-      </button>
+      >Prev</button>
       <span>Page {{ currentPage }} / {{ totalPages }}</span>
       <button
         (click)="currentPage = currentPage + 1"
         [disabled]="currentPage * pageSize >= filteredEmployees.length"
         class="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-      >
-        Next
-      </button>
+      >Next</button>
     </div>
   </div>
 </div>

@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker';
 
 @Injectable({ providedIn: 'root' })
 export class EmployeeService {
-  private employees: User[] = [];
+  private employees: User[];
 
   constructor() {
     this.employees = this.generateFakeEmployees(500);

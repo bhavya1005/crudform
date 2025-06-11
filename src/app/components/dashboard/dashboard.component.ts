@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgChartsModule } from 'ng2-charts';
-import { ChartType, ChartConfiguration } from 'chart.js';
-import { EmployeeService } from '../../services/employee.service';
-import { User } from '../../models/user.model';
+import { ChartType } from 'chart.js';
+import { EmployeeListComponent } from '../employees/employees.component';
 
 @Component({
   selector: 'app-dashboard',
